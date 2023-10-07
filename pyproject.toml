@@ -3,11 +3,19 @@ name = "newsletter-backend"
 version = "0.1.0"
 description = ""
 authors = ["Peter Karolyi <peter@karolyi.dev>"]
-readme = "README.md"
+packages = [{ include = "newsletter_backend" }]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "~3.11"
+fastapi = "^0.103.2"
+uvicorn = "^0.23.2"
+pydantic = "^2.4.2"
+sqlalchemy = "^2.0.21"
+httpx = "^0.25.0"
+psycopg2-binary = "^2.9.9"
 
+[tool.poetry.scripts]
+start = "DEV=true python newsletter_backend"
 
 [build-system]
 requires = ["poetry-core"]
