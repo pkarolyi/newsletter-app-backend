@@ -26,8 +26,7 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 # Get database connection string from app config
-settings = AppSettings(_env_file=".env")
-config.set_main_option("sqlalchemy.url", settings.database_url)
+config.set_main_option("sqlalchemy.url", AppSettings().database_url)
 
 
 def run_migrations_offline() -> None:

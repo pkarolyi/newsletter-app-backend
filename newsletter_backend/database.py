@@ -1,8 +1,11 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 
 from .config import AppSettings
 
-engine = create_engine(AppSettings.database_url)
+engine = create_engine(AppSettings().database_url)
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+def getSession():
+    with Session(engine) as session:
+        yield session
