@@ -1,13 +1,11 @@
-import os
 import uvicorn
 
-PORT = os.environ.get("PORT", "8000")
-RELOAD = os.environ.get("DEV", "false")
+from .config import AppEnv, AppSettings
 
 uvicorn.run(
     "newsletter_backend.app:app",
-    port=int(PORT),
+    port=int(AppSettings.port),
     host="0.0.0.0",
     server_header=False,
-    reload=(RELOAD == "true"),
+    reload=(AppSettings.env == AppEnv.dev),
 )
