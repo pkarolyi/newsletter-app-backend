@@ -7,8 +7,8 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from newsletter_backend.models import Base
-from newsletter_backend.config import AppSettings
+from newsletter_backend.models import ModelBase
+from newsletter_backend.config import app_config
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -23,10 +23,10 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = Base.metadata
+target_metadata = ModelBase.metadata
 
 # Get database connection string from app config
-config.set_main_option("sqlalchemy.url", AppSettings().database_url)
+config.set_main_option("sqlalchemy.url", app_config.database_url)
 
 
 def run_migrations_offline() -> None:

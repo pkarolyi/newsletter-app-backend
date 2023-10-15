@@ -2,14 +2,12 @@ from datetime import datetime
 
 from sqlalchemy import ForeignKey, DateTime
 from sqlalchemy.sql import func
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from .database import ModelBase
 
 
-class Base(DeclarativeBase):
-    pass
-
-
-class User(Base):
+class ModelUser(ModelBase):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -21,19 +19,23 @@ class User(Base):
         DateTime(timezone=True), server_default=func.now()
     )
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), onupdate=func.now()
+        DateTime(timezone=True), onupdate=func.now(), server_default=func.now()
     )
 
-    email_verification: Mapped["UserEmailVerification"] = relationship(
-        back_populates="user"
-    )
+    tokens: Mapped["ModelUserTokens"] = relationship(back_populates="user")
 
 
-class UserEmailVerification(Base):
-    __tablename__ = "user_email_verification"
+class ModelUserTokens(ModelBase):
+    __tablename__ = "user_tokens"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id = mapped_column(ForeignKey("user.id"), unique=True)
-    timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    session_token: Mapped[str]
+    session_expiry: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    refresh_token: Mapped[str]
+    refresh_expiry: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    timestamp: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
 
-    user: Mapped["User"] = relationship(back_populates="email_verification")
+    user: Mapped["ModelUser"] = relationship(back_populates="tokens")

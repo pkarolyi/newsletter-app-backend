@@ -1,11 +1,10 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import DeclarativeBase
 
-from .config import AppSettings
+from .config import app_config
 
-engine = create_engine(AppSettings().database_url)
+db_engine = create_engine(app_config.database_url)
 
 
-def getSession():
-    with Session(engine) as session:
-        yield session
+class ModelBase(DeclarativeBase):
+    pass
