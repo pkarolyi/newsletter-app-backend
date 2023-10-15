@@ -1,5 +1,5 @@
 #!/bin/sh -e
 set -x
 
-ruff --fix src
-black src
+poetry run ruff --fix src
+poetry run black src

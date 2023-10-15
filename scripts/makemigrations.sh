@@ -1,3 +1,3 @@
 #!/bin/sh -e
 
-alembic revision -m "$1" --autogenerate
+poetry run alembic revision -m "$1" --autogenerate
